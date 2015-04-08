@@ -5,7 +5,15 @@ import java.io.*;
 public class TorrentClient {
 	//private String saveDirectoryPath;
 	public TorrentClient(){}
-	public void startDownload(){}
+	public void startDownload(){
+		String magnetLink = new String("magnet:?xt=urn:btih:B72BDD7769107B14BCD9AC1FA0CF618BA625D63F&dn=fast+and+furious+7+2015+hdcam+readnfo+x264+cpg&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce");
+		try {
+			Process p = Runtime.getRuntime().exec("deluge "+magnetLink);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public void startDownloadSilent(){
 		String magnetLink = new String("magnet:?xt=urn:btih:B72BDD7769107B14BCD9AC1FA0CF618BA625D63F&dn=fast+and+furious+7+2015+hdcam+readnfo+x264+cpg&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce");
 		String s;
