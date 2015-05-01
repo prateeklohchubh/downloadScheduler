@@ -17,41 +17,35 @@ public class SeriesParser implements ParseType{
 	ArrayList<String> series = new ArrayList<String>();
 	
 	public SeriesParser(ParserType series2) {
-		// TODO Auto-generated constructor stub
 		this.parser = series2;
 	}
 
 	@Override
 	public ParserType getType() {
-		// TODO Auto-generated method stub
 		return parser;
 	}
 
 	@Override
-	public ArrayList<String> getValueFromXML(File XML, String searchItem) {
-		// TODO Auto-generated method stub
+	public ArrayList<String> getValueFromXML(File XML) {
+
 		try 
 		{
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			SAXParser sparser = factory.newSAXParser();
 			DefaultHandler handler = new DefaultHandler()
 			{
-				boolean bfname = false;
-				boolean blname = false;
-				//boolean bnname = false;
-				//boolean bsalary = false;
+				boolean id = false;
+				boolean seriesName = false;
 				
 				public void startElement(String uri, String localName, String qname, Attributes attributes) throws SAXException
 				{
-					//System.out.println("Start Element: " + qname);
 					if(qname.equalsIgnoreCase("id"))
 					{
-						bfname = true;
+						id = true;
 					}
 					if(qname.equalsIgnoreCase("SeriesName"))
 					{
-						blname = true;
-						series.add(qname);
+						seriesName = true;
 					}
 					/*if(qname.equalsIgnoreCase("EpisodeName"))
 					{
@@ -71,15 +65,17 @@ public class SeriesParser implements ParseType{
 				public void characters(char ch[], int start, int length) throws SAXException
 				{
 					//System.out.println("Printing Series Information:");
-					if(bfname)
+					if(id)
 					{
 						System.out.println("ID: " + new String(ch, start, length));
-						bfname = false;
+						id = false;
+						
 					}
-					if(blname)
+					if(seriesName)
 					{
 						System.out.println("Series Name: " + new String(ch, start, length));
-						blname = false;
+						seriesName = false;
+						series.add(new String(ch, start, length));
 					}
 					/*if(bnname)
 					{

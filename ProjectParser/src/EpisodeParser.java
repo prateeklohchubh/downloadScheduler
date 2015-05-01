@@ -29,7 +29,7 @@ public class EpisodeParser implements ParseType{
 	}
 
 	@Override
-	public ArrayList<String> getValueFromXML(File XML, String searchItem) {
+	public ArrayList<String> getValueFromXML(File XML) {
 		// TODO Auto-generated method stub
 		try 
 		{
@@ -37,8 +37,8 @@ public class EpisodeParser implements ParseType{
 			SAXParser sparser = factory.newSAXParser();
 			DefaultHandler handler = new DefaultHandler()
 			{
-				boolean bfname = false;
-				boolean blname = false;
+				boolean id = false;
+				boolean episodeName = false;
 				//boolean bnname = false;
 				//boolean bsalary = false;
 				
@@ -47,12 +47,11 @@ public class EpisodeParser implements ParseType{
 					//System.out.println("Start Element: " + qname);
 					if(qname.equalsIgnoreCase("id"))
 					{
-						bfname = true;
+						id = true;
 					}
 					if(qname.equalsIgnoreCase("EpisodeName"))
 					{
-						blname = true;
-						episode.add(qname);
+						episodeName = true;
 					}
 					/*if(qname.equalsIgnoreCase("EpisodeName"))
 					{
@@ -72,15 +71,16 @@ public class EpisodeParser implements ParseType{
 				public void characters(char ch[], int start, int length) throws SAXException
 				{
 					//System.out.println("Printing Episode Information:");
-					if(bfname)
+					if(id)
 					{
 						System.out.println("ID: " + new String(ch, start, length));
-						bfname = false;
+						id = false;
 					}
-					if(blname)
+					if(episodeName)
 					{
 						System.out.println("Episode Name: " + new String(ch, start, length));
-						blname = false;
+						episodeName = false;
+						episode.add(new String(ch, start, length));
 					}
 					/*if(bnname)
 					{

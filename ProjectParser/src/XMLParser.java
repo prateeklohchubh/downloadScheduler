@@ -24,14 +24,14 @@ public class XMLParser {
 	{	
 		if(dataParseType.getType().equals(series))
 		{
-			File XML = new File("C:\\B.Tech\\6th Semester\\PP\\Project\\apiresult.xml");
-			dataParseType.getValueFromXML(XML, attributeName);
+			File XML = new File(attributeName);
+			parserResult = dataParseType.getValueFromXML(XML);
 			return parserResult;
 		}
 		else if(dataParseType.getType().equals(episode))
 		{
-			File XML = new File("C:\\B.Tech\\6th Semester\\PP\\Project\\apiresult.xml");
-			dataParseType.getValueFromXML(XML, attributeName);
+			File XML = new File(attributeName);
+			parserResult = dataParseType.getValueFromXML(XML);
 			return parserResult;
 		}
 		else
