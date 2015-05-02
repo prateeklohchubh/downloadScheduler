@@ -9,9 +9,11 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TvDbAPIManager {
-
+	private static final Logger logging = Logger.getGlobal();
 	static final String APIKey="";
 	Series series;
 	Episode episode;
@@ -32,6 +34,7 @@ public class TvDbAPIManager {
 				series.length();
 		} catch (NullPointerException e3) {
 				// TODO Auto-generated catch block
+				logging.log(Level.SEVERE, "getAllAvailableSeries", e3);
 				e3.printStackTrace();
 		}
 		URL url;
@@ -44,14 +47,17 @@ public class TvDbAPIManager {
 		} 
 		catch (MalformedURLException e2) {
 			// TODO Auto-generated catch block
+			logging.log(Level.SEVERE, "getAllAvailableSeries", e2);
 			e2.printStackTrace();
 		}
 		catch (ProtocolException e1) {
 			// TODO Auto-generated catch block
+			logging.log(Level.SEVERE, "getAllAvailableSeries", e1);
 			e1.printStackTrace();
 		} 
 		catch (IOException e) {
 			// TODO Auto-generated catch block
+			logging.log(Level.SEVERE, "getAllAvailableSeries", e);
 			e.printStackTrace();
 		}
 		
@@ -63,6 +69,7 @@ public class TvDbAPIManager {
 		} 
 		catch (IOException e1) {
 			// TODO Auto-generated catch block
+			logging.log(Level.SEVERE, "getAllAvailableSeries", e1);
 			e1.printStackTrace();
 		}
 		
@@ -83,6 +90,7 @@ public class TvDbAPIManager {
 	 
 		} 
 		catch (IOException e) {
+			logging.log(Level.SEVERE, "getAllAvailableSeries", e);
 			e.printStackTrace();
 		} 
 		finally {
@@ -91,6 +99,7 @@ public class TvDbAPIManager {
 					xml.close();
 				} 
 				catch (IOException e) {
+					logging.log(Level.SEVERE, "getAllAvailableSeries", e);
 					e.printStackTrace();
 				}
 			}
@@ -100,6 +109,7 @@ public class TvDbAPIManager {
 					outputStream.close();
 				} 
 				catch (IOException e) {
+					logging.log(Level.SEVERE, "getAllAvailableSeries", e);
 					e.printStackTrace();
 				}
 	 
@@ -135,14 +145,17 @@ public class TvDbAPIManager {
 		} 
 		catch (MalformedURLException e2) {
 			// TODO Auto-generated catch block
+			logging.log(Level.SEVERE, "SearchSeries", e2);
 			e2.printStackTrace();
 		}
 		catch (ProtocolException e1) {
 			// TODO Auto-generated catch block
+			logging.log(Level.SEVERE, "SearchSeries", e1);
 			e1.printStackTrace();
 		} 
 		catch (IOException e) {
 			// TODO Auto-generated catch block
+			logging.log(Level.SEVERE, "SearchSeries", e);
 			e.printStackTrace();
 		}
 		connection.setRequestProperty("Accept", "application/xml");
@@ -153,6 +166,7 @@ public class TvDbAPIManager {
 		} 
 		catch (IOException e1) {
 			// TODO Auto-generated catch block
+			logging.log(Level.SEVERE, "SearchSeries", e1);
 			e1.printStackTrace();
 		}
 		
@@ -173,6 +187,7 @@ public class TvDbAPIManager {
 	 
 		} 
 		catch (IOException e) {
+			logging.log(Level.SEVERE, "SearchSeries", e);
 			e.printStackTrace();
 		} 
 		finally {
@@ -181,6 +196,7 @@ public class TvDbAPIManager {
 					xml.close();
 				} 
 				catch (IOException e) {
+					logging.log(Level.SEVERE, "SearchSeries", e);
 					e.printStackTrace();
 				}
 			}
@@ -190,6 +206,7 @@ public class TvDbAPIManager {
 					outputStream.close();
 				} 
 				catch (IOException e) {
+					logging.log(Level.SEVERE, "SearchSeries", e);
 					e.printStackTrace();
 				}
 	 

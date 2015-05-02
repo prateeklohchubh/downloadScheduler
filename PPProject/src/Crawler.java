@@ -7,10 +7,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import java.util.logging.Logger;
 
 public class Crawler
 {
+	private static final Logger logging = Logger.getGlobal();
     // We'll use a fake USER_AGENT so the web server thinks the robot is a normal web browser.
     private static final String USER_AGENT =
             "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.112 Safari/535.1";
@@ -27,7 +29,10 @@ public class Crawler
      */
     public boolean crawl(String url, String searchWord)
     {
- 
+    	Object[] o =  new Object[2];
+    	o[0] = url;
+    	o[1] = searchWord;
+    	logging.entering(Crawler.class.getName(), "crawl", o);
         try
         {
             Connection connection = Jsoup.connect(url).userAgent(USER_AGENT);
@@ -59,40 +64,50 @@ public class Crawler
                         return true;
                     }
                 	catch (IllegalArgumentException illegalURL){
-                    	System.out.println("Found URL is invalid or site may be unavailable");
-                    	
+                		logging.throwing(Crawler.class.getName(), "crawl", illegalURL);
+                    	System.out.println("Found URL is invalid or site may be unavailable");                    	
                     }
                 	catch(IOException ioe)
                     {
+                		logging.throwing(Crawler.class.getName(), "crawl", ioe);
                         return false;
                     }
             	}
             	this.links.add(link.absUrl("href"));
             }
+            logging.exiting(Crawler.class.getName(), "crawl");
             return false;
         }
         catch (IllegalArgumentException illegalURL){
+        	logging.throwing(Crawler.class.getName(), "crawl", illegalURL);
         	System.out.println("Url is invalid or site may be unavailable");
         	return false;
         }
         catch(IOException ioe)
         {
+        	logging.throwing(Crawler.class.getName(), "crawl", ioe);
             return false;
         }
     }
 
 	public String fetchMagnetLink(String url, Document foundURLhtmlDoc){
-		
+		Object[] o =  new Object[2];
+    	o[0] = url;
+    	o[1] = foundURLhtmlDoc;
+    	logging.entering(Crawler.class.getName(), "crawl", o);
 		System.out.println("something ------"+foundURLhtmlDoc.select("a[class*=magnetlinkButton]").attr("href"));
 		this.magnetLink = foundURLhtmlDoc.select("a[class*=magnetlinkButton]").attr("href");
+		logging.exiting(Crawler.class.getName(), "fetchMagnetLink");
 		return null;
 	}
 	
 	public String getmagnetLink(){
+		logging.exiting(Crawler.class.getName(), "getmagnetLink", this.magnetLink);
 		return this.magnetLink;
 	}
 	
     public String getfoundURL(){
+    	logging.exiting(Crawler.class.getName(), "getfoundURL", this.foundURL);
     	return this.foundURL;
     }
 

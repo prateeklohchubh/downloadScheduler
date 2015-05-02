@@ -1,6 +1,8 @@
+import java.util.logging.Logger;
+
 
 public class Series{
-
+	private static final Logger logging = Logger.getGlobal();
 	int seriesID;
 	String seriesName;
 	
@@ -13,6 +15,8 @@ public class Series{
 	
         public Series(String seriesName, int seriesID)
 	{
+        Object[] o = {seriesName, seriesID};
+        logging.entering(Series.class.getName(), "Series",o);
 		this.seriesID=seriesID;
 		this.seriesName=seriesName;
 	}
