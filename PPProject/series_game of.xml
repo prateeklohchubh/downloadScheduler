@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Data>
 <Series>
+<seriesid>278339</seriesid>
+<language>en</language>
+<SeriesName>Game of Stones</SeriesName>
+<banner>graphical/278339-g2.jpg</banner>
+<Overview>An "extreme gem hunter" named Don Kogen, who is described as a "legend" in the business. Kogen, who is CEO of Gem Guys Inc., specializes in rare stones "from the most dangerous and lawless places on earth, racing the clock to be the first to each new find, always staying one step ahead of the competition."</Overview>
+<FirstAired>2014-02-28</FirstAired>
+<Network>Discovery</Network>
+<IMDB_ID>tt3780362</IMDB_ID>
+<id>278339</id>
+</Series>
+<Series>
 <seriesid>278591</seriesid>
 <language>en</language>
 <SeriesName>Game of Arms</SeriesName>
@@ -13,17 +24,6 @@ The series hails from Matt Renner and Ethan Prochnik, the Emmy Award-winning pro
 <IMDB_ID>tt3525596</IMDB_ID>
 <zap2it_id>EP01853455</zap2it_id>
 <id>278591</id>
-</Series>
-<Series>
-<seriesid>278339</seriesid>
-<language>en</language>
-<SeriesName>Game of Stones</SeriesName>
-<banner>graphical/278339-g2.jpg</banner>
-<Overview>An "extreme gem hunter" named Don Kogen, who is described as a "legend" in the business. Kogen, who is CEO of Gem Guys Inc., specializes in rare stones "from the most dangerous and lawless places on earth, racing the clock to be the first to each new find, always staying one step ahead of the competition."</Overview>
-<FirstAired>2014-02-28</FirstAired>
-<Network>Discovery</Network>
-<IMDB_ID>tt3780362</IMDB_ID>
-<id>278339</id>
 </Series>
 <Series>
 <seriesid>282055</seriesid>
@@ -49,6 +49,16 @@ The series hails from Matt Renner and Ethan Prochnik, the Emmy Award-winning pro
 <id>121361</id>
 </Series>
 <Series>
+<seriesid>73597</seriesid>
+<language>en</language>
+<SeriesName>NFL Game of the Week</SeriesName>
+<banner>graphical/73597-g.jpg</banner>
+<Overview>Welcome to the newly-realigned NFL Game of the Week guide at TV Tome. Those of you who watch NFL Network and see the NFL Game of the Week are probably asking, What makes an NFL Game of the Week? There are many factors involved.  It could be a record-setting performance or a great rivalry.  Most of the time, it is the games that go down to the final seconds. Starting in 1965, NFL Films produced NFL Game of the Week to showcase the league's biggest contest.  It started out as the last reminder of the old newsreels.  These shows were packaged for air less than 24 hours after the game was played.  This was the pattern established for the show's first 22 years (1965-1986). Production of the old NFL Game of the Week presented its drawbacks.  Facilities were so primitive that the slightest mistake in a narration meant starting over.  This did not sit well with the proven sportscasters brought in to narrate the shows. NFL Game of the Week found its mark around 1970, wh</Overview>
+<FirstAired>1965-09-01</FirstAired>
+<zap2it_id>SH618615</zap2it_id>
+<id>73597</id>
+</Series>
+<Series>
 <seriesid>82244</seriesid>
 <language>en</language>
 <SeriesName>History Of Football: The Beautiful Game</SeriesName>
@@ -58,16 +68,6 @@ The series hails from Matt Renner and Ethan Prochnik, the Emmy Award-winning pro
 <Network>BBC One</Network>
 <IMDB_ID>tt0408221</IMDB_ID>
 <id>82244</id>
-</Series>
-<Series>
-<seriesid>73597</seriesid>
-<language>en</language>
-<SeriesName>NFL Game of the Week</SeriesName>
-<banner>graphical/73597-g.jpg</banner>
-<Overview>Welcome to the newly-realigned NFL Game of the Week guide at TV Tome. Those of you who watch NFL Network and see the NFL Game of the Week are probably asking, What makes an NFL Game of the Week? There are many factors involved.  It could be a record-setting performance or a great rivalry.  Most of the time, it is the games that go down to the final seconds. Starting in 1965, NFL Films produced NFL Game of the Week to showcase the league's biggest contest.  It started out as the last reminder of the old newsreels.  These shows were packaged for air less than 24 hours after the game was played.  This was the pattern established for the show's first 22 years (1965-1986). Production of the old NFL Game of the Week presented its drawbacks.  Facilities were so primitive that the slightest mistake in a narration meant starting over.  This did not sit well with the proven sportscasters brought in to narrate the shows. NFL Game of the Week found its mark around 1970, wh</Overview>
-<FirstAired>1965-09-01</FirstAired>
-<zap2it_id>SH618615</zap2it_id>
-<id>73597</id>
 </Series>
 <Series>
 <seriesid>254597</seriesid>
@@ -124,7 +124,7 @@ Rise of the Video Game is a comprehensive and progressive exploration of the pas
 <seriesid>77546</seriesid>
 <language>en</language>
 <SeriesName>The Name of the Game</SeriesName>
-<banner>graphical/77546-g4.jpg</banner>
+<banner>graphical/77546-g3.jpg</banner>
 <Overview>The Name of the Game was actually three series under one title.  Each of the three stars of the show, Gene Barry, Robert Stack and Tony Franciosa were featured in their own self-contained episodes.  The connection between them was Howard Publications, a Los Angeles based publishing empire that had been built up from scratch by its dynamic owner, Glenn Howard. Howard's position of power, his confrontations with business and political enemies, and his own flamboyant lifestyle were portrayed in his portion of The Name of the Game. Within the Howard empire were investigative correspondent Jeff Dillon and editor Dan Farrell. Dillon was a super-agressive former newsboy who had clawed his way up to a position of power and respect working for Howard's People Magazine. Farrell was a former FBI agent who had gone into the publishing business because it provided a position from which to make the public aware of the threats posed by organized crime.</Overview>
 <FirstAired>1968-09-01</FirstAired>
 <Network>NBC</Network>

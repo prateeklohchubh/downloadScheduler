@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
+//Entity class stored in form of records in ObjectDB sql database
 @Entity
 public class UserSeriesRepository implements Serializable{
 	
@@ -31,7 +32,8 @@ public class UserSeriesRepository implements Serializable{
 		
 	}
 	
-	public void findBySeriesID(Series series)
+	//Returns a record by comparing seriesID, if found
+	public UserSeriesRepository findBySeriesID(Series series)
 	{
 		EntityManagerFactory emf =
 	            Persistence.createEntityManagerFactory("$objectdb/db/userrepository.odb");
@@ -45,29 +47,20 @@ public class UserSeriesRepository implements Serializable{
 	        // Close the database connection:
 	        em.close();
 	        emf.close();
+	        return rep;
 	}
 	
+	//Returns all records in an arraylist
 	public List<UserSeriesRepository> findAllLatestEpisodes()
 	{
-		//System.out.println("HERE I aMA FDSASDFASDFASDFASDFSAFDASFDASFDASFDASFD");
 		EntityManagerFactory emf =
 	            Persistence.createEntityManagerFactory("$objectdb/db/userrepository.odb");
 	        EntityManager em = emf.createEntityManager();
-	        //ArrayList<Date> releaseDates=new ArrayList<Date>();
-	        //System.out.println("HERE");
 
 	        TypedQuery<UserSeriesRepository> query = em.createQuery("SELECT c FROM UserSeriesRepository c", UserSeriesRepository.class);
 	        List<UserSeriesRepository> results =null;
 	        results=query.getResultList();
-	        //System.out.println("HERE");
 
-	        for(UserSeriesRepository userRep: results)
-	        {
-		        System.out.println(userRep.nextEpisodeRelease+" FOUND!");
-		        //releaseDates.add(userRep.nextEpisodeRelease);
-	        }
-	        
-	 
 	        // Close the database connection:
 	        em.close();
 	        emf.close();
@@ -75,6 +68,7 @@ public class UserSeriesRepository implements Serializable{
 	        return results;
 	}
 
+	//Adds records to database
 	public Status saveSeries(UserSeriesList series)
 	{
 		Status status=Status.INPROGRESS;
@@ -92,8 +86,6 @@ public class UserSeriesRepository implements Serializable{
 	            rep.nextEpisodeRelease=series.getNextEpisodeRelease();
 
 		        em.getTransaction().begin();
-
-		        System.out.println("IN SAVE"+series.getSeriesInfo().getSeriesName());
 		        UserSeriesRepository foundRepo=em.find(UserSeriesRepository.class, rep.seriesID);
 		        
 		        if(foundRepo==null)
@@ -102,7 +94,7 @@ public class UserSeriesRepository implements Serializable{
 		        	status=Status.DUPLICATE_DatabaseException;
 		        	//LOGGING
 		        }
-		        //else
+		        else
 		        {
 		            em.persist(rep);
 		            status=Status.SUCCESS;
@@ -136,6 +128,7 @@ public class UserSeriesRepository implements Serializable{
 	        emf.close();
 	}
 	
+	//Clears entire database of user shows information
 	public void deleteAllSeries()
 	{
 		EntityManagerFactory emf =
@@ -147,7 +140,6 @@ public class UserSeriesRepository implements Serializable{
 	        TypedQuery<UserSeriesRepository> query = em.createQuery("SELECT c FROM UserSeriesRepository c", UserSeriesRepository.class);
 	        List<UserSeriesRepository> results =null;
 	        results=query.getResultList();
-	        //System.out.println("HERE");
 
 	        for(UserSeriesRepository userRep: results)
 	        {
@@ -161,37 +153,7 @@ public class UserSeriesRepository implements Serializable{
 	        emf.close();
 	}
 	
-	public void updateSeries(UserSeriesList seriesList)
-	{
-		EntityManagerFactory emf =
-	            Persistence.createEntityManagerFactory("$objectdb/db/userrepository.odb");
-	        EntityManager em = emf.createEntityManager();
-	  
-	        em.getTransaction().begin();
 
-	        int seriesID=seriesList.getSeriesInfo().getSeriesID();
-	        UserSeriesRepository record=em.find(UserSeriesRepository.class, seriesID);
-	        em.remove(record);
-	        
-	        UserSeriesRepository rep=new UserSeriesRepository();
-            rep.episodeAirDate=seriesList.getLastEpisodeDownloaded().getepisodeAirDate();
-            rep.episodeID=seriesList.getLastEpisodeDownloaded().getEpisodeID();
-            rep.episodeNumber=seriesList.getLastEpisodeDownloaded().getEpisodeNumber();
-            rep.season=seriesList.getLastEpisodeDownloaded().getSeason();
-            rep.seriesName=seriesList.getSeriesInfo().getSeriesName();
-            rep.seriesID=seriesList.getSeriesInfo().getSeriesID();
-            rep.nextEpisodeRelease=seriesList.getNextEpisodeRelease();
-            
-	        em.persist(rep);
-	        
-	        System.out.println("UPDATED! \r\n");
-	        
-    		em.getTransaction().commit();
-
-	        // Close the database connection:
-	        em.close();
-	        emf.close();
-	}
 	
 	public static void main(String args[])
 	{	UserSeriesRepository u = new UserSeriesRepository();

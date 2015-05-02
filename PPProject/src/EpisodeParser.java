@@ -16,9 +16,13 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+//Concrete Class of Strategy Pattern
 
 public class EpisodeParser implements ParseType{
 	private static final Logger logging = Logger.getGlobal();
+	
+	//**GLOBAL VARIABLES**//
+	
 	ParserType parser;
 	ArrayList<Object> episode = new ArrayList<>();
 	Episode episodeElement=new Episode();
@@ -35,6 +39,8 @@ public class EpisodeParser implements ParseType{
 		return parser;
 	}
 
+	//Parses XML file using filepath variable in @param searchItem and returns an arraylist
+	//of Episode cast as Objects
 	@Override
 	public ArrayList<Object> getValueFromXML(String searchItem) {
 		// TODO Auto-generated method stub
@@ -53,7 +59,7 @@ public class EpisodeParser implements ParseType{
 				boolean firstAired = false;
 				
 
-				
+				//Method to access starting element of XML file
 				public void startElement(String uri, String localName, String qname, Attributes attributes) throws SAXException
 				{	
 					Object[] o = {uri,localName, qname, attributes};
@@ -81,20 +87,17 @@ public class EpisodeParser implements ParseType{
 
 				}
 				
+				//Method to access last element of XML file
 				public void endElement(String uri, String localName,String qname) throws SAXException
 				{
 					Object[] o = {uri,localName, qname};
 					logging.entering(EpisodeParser.class.getName(), "endElement", o);
 					if ((qname.equalsIgnoreCase("Episode"))&&(episodeElement.getepisodeAirDate() != null)){
 						episode.add(episodeElement);
-						/*System.out.println(episodeElement.getSeason());
-						System.out.println(episodeElement.getepisodeAirDate());
-						//System.out.println(episodeElement.getEpisodeNumber());
-						System.out.println("______________________________________");
-						*/
 					}
 				}
 				
+				//Method to parse through values of various tags in XML file
 				public void characters(char ch[], int start, int length) throws SAXException
 				{
 					Object[] o = {ch,start, length};
@@ -146,7 +149,6 @@ public class EpisodeParser implements ParseType{
 			logging.throwing(EpisodeParser.class.getName(), "characters outermost catch", e);
 			e.printStackTrace();
 		}
-		System.out.println("episode list " + episode);
 		logging.exiting(EpisodeParser.class.getName(), "characters", episode);
 		return episode;
 	}

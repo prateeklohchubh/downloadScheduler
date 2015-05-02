@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class UserSeriesList{
 	
+	/**MEMBER VARIABLES*/
+
 	Series seriesInfo;
 	Episode lastEpisodeDownloaded;
 	Date nextEpisodeRelease;
@@ -19,6 +21,8 @@ public class UserSeriesList{
 	{
 		
 	}
+	
+	/**GETTER AND SETTER METHODS**/
 	
 	public Series getSeriesInfo()
 	{

@@ -1,7 +1,7 @@
 import java.io.File;
 import java.util.ArrayList;
 
-
+//Creates appropriate concrete class of strategy pattern depending on behavioural need
 public class XMLParser {
 	
 	ParserType series = ParserType.SERIES;

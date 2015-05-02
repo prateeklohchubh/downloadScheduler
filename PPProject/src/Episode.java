@@ -4,11 +4,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Episode{
+	
+	/**MEMBER VARIABLES*/
 	private static final Logger logging = Logger.getGlobal();
 	int episodeID;
 	int episodeNumber;
 	int season;
 	Date episodeAirDate;
+	
 	
 	public Episode(int episodeID,int episodeNumber,int season,Date episodeAirDate)
 	{
@@ -24,6 +27,9 @@ public class Episode{
 	{
 		logging.log(Level.FINEST,"Episode class created");
 	}
+	
+	
+	/**GETTER AND SETTER METHODS**/
 	
 	public int getEpisodeID()
 	{

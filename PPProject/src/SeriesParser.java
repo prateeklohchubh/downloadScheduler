@@ -13,9 +13,13 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+//Concrete Class of Strategy Pattern
 
 public class SeriesParser implements ParseType{
 	private final static Logger logging = Logger.getGlobal();
+	
+	//**GLOBAL VARIABLES**//
+
 	ParserType parser;
 	ArrayList<Object> series = new ArrayList<>();
 	Series seriesElement; 
@@ -30,6 +34,8 @@ public class SeriesParser implements ParseType{
 		return parser;
 	}
 
+	//Parses XML file using filepath variable in @param searchItem and returns an arraylist
+	//of Series cast as Objects
 	public ArrayList<Object> getValueFromXML(String searchItem) {
 		// TODO Auto-generated method stub
 		File XML=new File(searchItem);
@@ -42,6 +48,7 @@ public class SeriesParser implements ParseType{
 				boolean bfname = false;
 				boolean blname = false;
 				
+				//Method to access starting element of XML file
 				public void startElement(String uri, String localName, String qname, Attributes attributes) throws SAXException
 				{
 					
@@ -59,6 +66,7 @@ public class SeriesParser implements ParseType{
 					}
 				}
 				
+				//Method to access last element of XML file
 				public void endElement(String uri, String localName,String qname) throws SAXException
 				{
 					if (qname.equalsIgnoreCase("series")){
@@ -66,6 +74,7 @@ public class SeriesParser implements ParseType{
 					}
 				}
 				
+				//Method to parse through values of various tags in XML file
 				public void characters(char ch[], int start, int length) throws SAXException
 				{
 					

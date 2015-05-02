@@ -2,8 +2,6 @@
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
@@ -20,13 +18,14 @@ import javax.swing.JOptionPane;
  * @author Dell
  */
 public class GUI extends javax.swing.JFrame {
-	private static final Logger logging = Logger.getGlobal();
+
     /**
      * Creates new form GUI
      */
     public GUI() {
-    	logging.log(Level.INFO, "GUI initComponents() called");
-        initComponents();        
+        initComponents();
+        this.setVisible(true);
+        
     }
     final JFrame parent = new JFrame();
     TvDbAPIManager tvDbAPIManager = new TvDbAPIManager();
@@ -40,7 +39,7 @@ public class GUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
-    	logging.log(Level.FINE, "entered initComponents()");
+
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -160,13 +159,11 @@ public class GUI extends javax.swing.JFrame {
         );
 
         pack();
-        logging.log(Level.INFO, "GUI Created");
     }// </editor-fold>                        
     
     ArrayList<String> showlist = new ArrayList<String>();    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-    	logging.log(Level.FINER, "jButton1ActionPerformed", evt);
     	UserSeriesRepository userRep=new UserSeriesRepository();
     	allUserShows=userRep.findAllLatestEpisodes();
     	final String[] shows=new String[allUserShows.size()];
@@ -185,22 +182,20 @@ public class GUI extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
-    	logging.log(Level.FINER, "jMenuItem1ActionPerformed", evt);
     	UserPreferences userPreferences=new UserPreferences();
         String downloadLocation=JOptionPane.showInputDialog(parent, "Enter download location:");
         String updateInterval=JOptionPane.showInputDialog(parent,"Enter update interval");
         userPreferences.setDownloadLocation(downloadLocation);
-        userPreferences.setUpdateInterval(Long.parseLong(updateInterval));        
+        userPreferences.setUpdateInterval(Long.parseLong(updateInterval));
+        
+        
     }         
     
+    //Fetches magnetic link for given Series and episode and starts Torrent Client with fetched link
     private Status downloadLatestEpisode(UserSeriesList newUserShow)
     {
-<<<<<<< HEAD
     	Status status=Status.INPROGRESS;
-=======
-    	logging.entering(GUI.class.getName(),"downloadLatestAndUpdateRepository" , newUserShow);
->>>>>>> origin/latest
-    	System.out.println("Sending data.."+newUserShow.getLastEpisodeDownloaded().getSeason()+" "+ newUserShow.getLastEpisodeDownloaded().getEpisodeNumber());
+    	//System.out.println("Sending data.."+newUserShow.getLastEpisodeDownloaded().getSeason()+" "+ newUserShow.getLastEpisodeDownloaded().getEpisodeNumber());
     	Status linkStatus=spider.search(newUserShow.getSeriesInfo().getSeriesName(),newUserShow.getLastEpisodeDownloaded().getSeason(), newUserShow.getLastEpisodeDownloaded().getEpisodeNumber());
 		if(linkStatus == Status.LINK_FOUND){
 			String downloadLink = spider.getMagnetLink();
@@ -230,15 +225,17 @@ public class GUI extends javax.swing.JFrame {
     
     //Adds show to user show list and calls torrent client for specified season and episode
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-    	logging.log(Level.FINER, "jButton2ActionPerformed", evt);
+    
+    	//Taking input from user
+    	
         String seasoninput = JOptionPane.showInputDialog(parent, "Enter Starting Season to be downloaded");
         int season = Integer.parseInt(seasoninput);
         String episodeinput = JOptionPane.showInputDialog(parent,"Enter Starting Episode to be downloaded");
         int episodeNumber = Integer.parseInt(episodeinput);
         UserSeriesRepository userRep=new UserSeriesRepository();
         Series selectedSeries=allSeries.get(jList2.getSelectedIndex());
-        //System.out.println(jList2.getSelectedValue().toString());
-        //System.out.println(jList2.getSelectedIndex());
+
+        //Starting Torrent downloads for all available episodes from user-specified episode
         
         episodeList=tvDbAPIManager.searchSeries(selectedSeries);
         Episode latestEpisode=new Episode();
@@ -247,12 +244,10 @@ public class GUI extends javax.swing.JFrame {
         int currentEpisodeIndex=0;
         for(int i=0;i<episodeList.size();i++)
         {
-        	//System.out.println(episodeList.get(i).getEpisodeNumber());
         	if(episodeList.get(i).getSeason()==season&&episodeList.get(i).getEpisodeNumber()==episodeNumber)
         	{
         		latestEpisode=episodeList.get(i);
         		nextReleaseDate=episodeList.get(i+1).getepisodeAirDate();
-        		System.out.println(latestEpisode.getepisodeAirDate());
         		currentEpisodeIndex=i;
         	}
         }
@@ -260,7 +255,6 @@ public class GUI extends javax.swing.JFrame {
         userRep.saveSeries(newUserShow);
         showUserShows();
         JOptionPane.showMessageDialog(parent,"Show added to MyShows: "+selectedSeries.getSeriesName());
-        System.out.println(latestEpisode.getepisodeAirDate()+" "+selectedSeries.getSeriesName());
         
         Long currentDateInMillis=System.currentTimeMillis();
 		Date currentDate=new Date(currentDateInMillis);
@@ -268,7 +262,8 @@ public class GUI extends javax.swing.JFrame {
 		{
 			downloadLatestEpisode(newUserShow);
 		}
-        //userRep.findAllLatestEpisodes();
+		
+		//Update latestDOwnloadedEpisode and nextReleaseDate in User Repository
 		userRep.deleteSeries(selectedSeries);
 		userRep.saveSeries(newUserShow);
 
@@ -291,19 +286,15 @@ public class GUI extends javax.swing.JFrame {
 			downloadLatestEpisode(newUserShow);
 			currentEpisodeIndex++;	
 			userRep.deleteSeries(selectedSeries);
-<<<<<<< HEAD
 			userRep.saveSeries(newUserShow);
-=======
-			userRep.saveSeries(newUserShow);			
->>>>>>> origin/latest
 		}
         System.out.println("CurrentEpisodeinRep"+nextEpisode.episodeNumber);
 
     }                                        
 
+    //On Clicking search button
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-    	logging.log(Level.FINER, "jButton5ActionPerformed", evt);
         allSeries=tvDbAPIManager.getAllAvailableSeries(jTextField1.getText());
         final String[] shows=new String[allSeries.size()];
         for(int i=0;i<allSeries.size();i++)
@@ -323,8 +314,9 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }                                           
 
+    //On clicking delete button
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-    	logging.log(Level.FINER, "jButton3ActionPerformed", evt);
+
         Series selectedSeries=new Series();
         UserSeriesRepository removeUserShow=allUserShows.get(jList2.getSelectedIndex());
         selectedSeries.setSeriesID(removeUserShow.seriesID);
@@ -339,7 +331,6 @@ public class GUI extends javax.swing.JFrame {
         {
         	shows[i]=allUserShows.get(i).seriesName;
         }
-        //jList2.setModel(model);
         jList2.setModel(new javax.swing.AbstractListModel() {
             String[] strings =shows;
             public int getSize() { return strings.length; }
@@ -356,25 +347,16 @@ public class GUI extends javax.swing.JFrame {
     private Spider spider = new Spider();
 
     public void setAsBackground(String seriesName, int season, int episode){
-<<<<<<< HEAD
         Status linkStatus = spider.search(seriesName, season, episode);
     	if (linkStatus == Status.LINK_FOUND){
 	        String magnetLink = spider.getMagnetLink();
 	        System.out.println("Link :"+ magnetLink);
 	        torrentClient.startDownloadSilent(magnetLink);
     	}
-=======
-    	Object[] o = {seriesName, season, episode};
-        logging.entering(GUI.class.getName(), "setAsBackground", o);
-        String magnetLink = getMagnetLink.search(seriesName, season, episode);
-        System.out.println("Link :"+ magnetLink);
-        torrentClient.startDownloadSilent(magnetLink);
->>>>>>> origin/latest
     }
 
 
     public void setAsForeground(String seriesName, int season, int episode){
-<<<<<<< HEAD
 
     	Status linkStatus = spider.search(seriesName, season, episode);
     	if (linkStatus == Status.LINK_FOUND){
@@ -382,13 +364,6 @@ public class GUI extends javax.swing.JFrame {
 	        System.out.println("Link :"+ magnetLink);
 	        torrentClient.startDownload(magnetLink);
     	}
-=======
-    	Object[] o = {seriesName, season, episode};
-        logging.entering(GUI.class.getName(), "setAsForeground", o);
-        String magnetLink = getMagnetLink.search(seriesName, season, episode);
-        System.out.println("Link :"+ magnetLink);
-        torrentClient.startDownload(magnetLink);
->>>>>>> origin/latest
     }
     
     
@@ -412,24 +387,19 @@ public class GUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-        	logging.log(Level.SEVERE, null, ex);
-            //java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-        	logging.log(Level.SEVERE, null, ex);
-            //java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-        	logging.log(Level.SEVERE, null, ex);
-            //java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-        	logging.log(Level.SEVERE, null, ex);
-            //java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-            	logging.log(Level.INFO, "GUI set to visible");
                 new GUI().setVisible(true);
             }
         });

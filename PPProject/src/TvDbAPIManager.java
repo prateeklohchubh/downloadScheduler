@@ -18,6 +18,8 @@ public class TvDbAPIManager {
 	Series series;
 	Episode episode;
 	
+	//Calls TVdB API for all series for @param series search String 
+	//Calls series parser and returns arraylist of results
 	public ArrayList<Series> getAllAvailableSeries(String series)
 	{
 		
@@ -124,14 +126,12 @@ public class TvDbAPIManager {
 		{
 			seriesList.add((Series)obj);
 		}
-		for(int i=0;i<seriesList.size();i++)
-		{
-			System.out.println(((Series)seriesList.get(i)).getSeriesName());
-			System.out.println(((Series)seriesList.get(i)).getSeriesID());
-		}
+
 		return seriesList;
 	}
 	
+	//Calls TVdB API for episodes of a particular for @param series  
+	//Calls episode parser and returns arraylist of results
 	public ArrayList<Episode> searchSeries(Series series)
 	{
 		String uri ="http://thetvdb.com/api/03DFA0589C42B05D/series/"+series.getSeriesID()+"/all/en.xml";    
@@ -220,7 +220,6 @@ public class TvDbAPIManager {
 		for(int i=0;i<objectList.size();i++)
 		{
 			episodeList.add((Episode)objectList.get(i));
-			//System.out.println(((Episode)episodeList.get(i)).getEpisodeID());
 		}
 		return episodeList;
 		

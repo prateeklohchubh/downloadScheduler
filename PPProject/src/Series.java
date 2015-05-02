@@ -2,6 +2,9 @@ import java.util.logging.Logger;
 
 
 public class Series{
+	
+	/**MEMBER VARIABLES*/
+
 	private static final Logger logging = Logger.getGlobal();
 	int seriesID;
 	String seriesName;
@@ -20,6 +23,9 @@ public class Series{
 		this.seriesID=seriesID;
 		this.seriesName=seriesName;
 	}
+
+        
+    /**GETTER AND SETTER METHODS**/
 	
 	public int getSeriesID()
 	{

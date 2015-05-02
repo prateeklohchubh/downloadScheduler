@@ -53,10 +53,6 @@ public class TorrentClient {
 	            System.exit(-1);
 	        }
 	}
-        public static void main(String args[]){
-                TorrentClient t = new TorrentClient();
-                t.startDownloadSilent("magnet:?xt=urn:btih:B72BDD7769107B14BCD9AC1FA0CF618BA625D63F&dn=fast+and+furious+7+2015+hdcam+readnfo+x264+cpg&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce");
-                
-        }
+
 	
 }

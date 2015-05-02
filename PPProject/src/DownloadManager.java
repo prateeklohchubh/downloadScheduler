@@ -4,11 +4,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.*;
 
+//Singleton class and Entry point of project 
 
 public class DownloadManager {
-			
-	private static DownloadManager manager=new DownloadManager();
+	
+	//**STATIC GLOBAL VARIABLES**//
 	private static final Logger logging = Logger.getGlobal(); 
+	
+	//Singleton instance
+	private static DownloadManager manager=new DownloadManager();
+	
+	//**GLOBAL VARIABLES**//
 	boolean runInBackground;
 	static GUI mainGUI;
 	boolean showNotificationPopup;
@@ -16,6 +22,8 @@ public class DownloadManager {
 	TorrentClient torrentClient;
 	Spider getMagnetLink;
 	GUI gui;
+	
+	//Private constructor of Singleton class
 	private DownloadManager()
 	{	FileHandler fh;
 		try {  
@@ -35,12 +43,15 @@ public class DownloadManager {
 		logging.log(Level.INFO,"Class 1 constructor called");		
 	}
 	
+	//Creates one object of singleton and returns it
 	public static DownloadManager getInstance()
 	{
 		logging.entering(DownloadManager.class.getName(), "getInstance");
 		return manager;
 	}
 	
+	
+	//Initialises global variables
 	public void initialiseDownloadManager()
 	{
 		logging.entering(DownloadManager.class.getName(), "initaliseDownloadManager");
@@ -51,6 +62,7 @@ public class DownloadManager {
 		logging.exiting(DownloadManager.class.getName(), "initaliseDownloadManager");
 	}
 	
+	//Runs download scheduler in background without UI
 	public void setAsBackground(){
 		logging.entering(DownloadManager.class.getName(), "setAsBackground");
 		ArrayList<String> result = new ArrayList<String>(); 
@@ -60,8 +72,9 @@ public class DownloadManager {
 				torrentClient.startDownloadSilent(userSeries);
 			}
 		logging.exiting(DownloadManager.class.getName(), "setAsBackground");
-}
+	}
 	
+	//Runs download scheduler in foreground with UI
 	public void setAsForeground(){
 		logging.entering(DownloadManager.class.getName(), "setAsForeground");
 		this.initialiseDownloadManager();
@@ -78,7 +91,7 @@ public class DownloadManager {
 		logging.exiting(DownloadManager.class.getName(), "setAsForeground");
     }
 
-	
+	//Scans User show repositories for updates available
 	public ArrayList<String> ScanUserRepositoriesForUpdates()
 	{
 		logging.entering(DownloadManager.class.getName(), "ScanUserRepositoriesForUpdates");
@@ -88,14 +101,12 @@ public class DownloadManager {
 		Long currentDateInMillis=System.currentTimeMillis();
 		Date currentDate=new Date(currentDateInMillis);
 		ArrayList<String> result = new ArrayList<String>();
-		//if(allSeriesList!=null)
-		{
+
 		for(UserSeriesRepository userSeries: allSeriesList)
 		{
 			if(currentDate.after(userSeries.nextEpisodeRelease))
 			{
-				//System.out.println("LINK"+getMagnetLink.search("Breaking Bad", 1,1));
-				//result.add(getMagnetLink.search("Supernatural", 1,1));
+
 				Status linkStatus = getMagnetLink.search(userSeries.seriesName, userSeries.season, userSeries.episodeID);
 				if (linkStatus == Status.LINK_FOUND){
 					String magnetLinkFound = getMagnetLink.getMagnetLink();
@@ -107,26 +118,19 @@ public class DownloadManager {
 				}
 			}
 		}
-		}
-		//else
-			//return null;
-		//System.out.println(result.get(0));
 		logging.exiting(DownloadManager.class.getName(), "ScanUserRepositoriesForUpdates");
 		return result;		
 	}
 	
+	
+	//Main method - entry point of DownloadScheduler
 	public static void main(String args[]){
 		DownloadManager downloadManager = DownloadManager.getInstance();
 		logging.log(Level.INFO, "Started Main");
-		UserSeriesRepository rep=new UserSeriesRepository();
-		Series s = new Series("Supernatural",78901);
-		Date d=new Date(2141431);
-		UserSeriesList list=new UserSeriesList(s,new Episode(12, 1, 1, d),d);
-		//rep.saveSeries(list);
-		//rep.deleteAllSeries();
+
 		if (args.length>1)
 		{	
-	//		downloadManager.setAsBackground();
+			downloadManager.setAsBackground();
 		}
 		else
 		{
