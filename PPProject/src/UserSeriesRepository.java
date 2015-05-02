@@ -75,8 +75,9 @@ public class UserSeriesRepository implements Serializable{
 	        return results;
 	}
 
-	public void saveSeries(UserSeriesList series)
+	public Status saveSeries(UserSeriesList series)
 	{
+		Status status=Status.INPROGRESS;
 		 EntityManagerFactory emf =
 		            Persistence.createEntityManagerFactory("$objectdb/db/userrepository.odb");
 		        EntityManager em = emf.createEntityManager();
@@ -92,14 +93,27 @@ public class UserSeriesRepository implements Serializable{
 
 		        em.getTransaction().begin();
 
-		            System.out.println(series.getSeriesInfo().getSeriesName());
+		        System.out.println("IN SAVE"+series.getSeriesInfo().getSeriesName());
+		        UserSeriesRepository foundRepo=em.find(UserSeriesRepository.class, rep.seriesID);
+		        
+		        if(foundRepo==null)
+		        {
+		        	System.out.println("Series already in user repository");
+		        	status=Status.DUPLICATE_DatabaseException;
+		        	//LOGGING
+		        }
+		        //else
+		        {
 		            em.persist(rep);
+		            status=Status.SUCCESS;
+		        }
 		        
 		        em.getTransaction().commit();
 		 
 		        // Close the database connection:
 		        em.close();
 		        emf.close();
+		        return status;
 	}
 	
 	public void deleteSeries(Series series)

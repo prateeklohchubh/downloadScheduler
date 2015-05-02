@@ -71,7 +71,15 @@ public class DownloadManager {
 			{
 				//System.out.println("LINK"+getMagnetLink.search("Breaking Bad", 1,1));
 				//result.add(getMagnetLink.search("Supernatural", 1,1));
-				result.add(getMagnetLink.search(userSeries.seriesName, userSeries.season, userSeries.episodeID));
+				Status linkStatus = getMagnetLink.search(userSeries.seriesName, userSeries.season, userSeries.episodeID);
+				if (linkStatus == Status.LINK_FOUND){
+					String magnetLinkFound = getMagnetLink.getMagnetLink();
+					result.add(magnetLinkFound);
+				}
+				
+				else{
+					System.out.println(userSeries.seriesName +" season"+ userSeries.season+ " episode"+ userSeries.episodeNumber+"not found");
+				}
 			}
 		}
 		}

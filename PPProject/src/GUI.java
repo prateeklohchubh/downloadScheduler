@@ -190,12 +190,34 @@ public class GUI extends javax.swing.JFrame {
         
     }         
     
-    private void downloadLatestAndUpdateRepository(UserSeriesList newUserShow)
+    private Status downloadLatestEpisode(UserSeriesList newUserShow)
     {
+    	Status status=Status.INPROGRESS;
     	System.out.println("Sending data.."+newUserShow.getLastEpisodeDownloaded().getSeason()+" "+ newUserShow.getLastEpisodeDownloaded().getEpisodeNumber());
-    	String downloadLink=getMagnetLink.search(newUserShow.getSeriesInfo().getSeriesName(),newUserShow.getLastEpisodeDownloaded().getSeason(), newUserShow.getLastEpisodeDownloaded().getEpisodeNumber());
-		torrentClient.startDownload(downloadLink);
-		UserSeriesRepository UserRep=new UserSeriesRepository();
+    	Status linkStatus=spider.search(newUserShow.getSeriesInfo().getSeriesName(),newUserShow.getLastEpisodeDownloaded().getSeason(), newUserShow.getLastEpisodeDownloaded().getEpisodeNumber());
+		if(linkStatus == Status.LINK_FOUND){
+			String downloadLink = spider.getMagnetLink();
+			torrentClient.startDownload(downloadLink);
+			status=Status.SUCCESS;
+		}
+		return status;
+    }
+    
+    private void showUserShows()
+    {
+    	UserSeriesRepository userRep=new UserSeriesRepository();
+    	allUserShows=userRep.findAllLatestEpisodes();
+    	final String[] shows=new String[allUserShows.size()];
+        for(int i=0;i<allUserShows.size();i++)
+        {
+        	shows[i]=allUserShows.get(i).seriesName;
+        }
+        //jList2.setModel(model);
+        jList2.setModel(new javax.swing.AbstractListModel() {
+            String[] strings =shows;
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
     }
 
     
@@ -208,14 +230,13 @@ public class GUI extends javax.swing.JFrame {
         int episodeNumber = Integer.parseInt(episodeinput);
         UserSeriesRepository userRep=new UserSeriesRepository();
         Series selectedSeries=allSeries.get(jList2.getSelectedIndex());
-        System.out.println(jList2.getSelectedValue().toString());
-        System.out.println(jList2.getSelectedIndex());
+        //System.out.println(jList2.getSelectedValue().toString());
+        //System.out.println(jList2.getSelectedIndex());
         
         episodeList=tvDbAPIManager.searchSeries(selectedSeries);
         Episode latestEpisode=new Episode();
         Episode nextEpisode=new Episode();
         Date nextReleaseDate=null;
-        Date futureReleaseDate=null;
         int currentEpisodeIndex=0;
         for(int i=0;i<episodeList.size();i++)
         {
@@ -224,16 +245,13 @@ public class GUI extends javax.swing.JFrame {
         	{
         		latestEpisode=episodeList.get(i);
         		nextReleaseDate=episodeList.get(i+1).getepisodeAirDate();
-        		if(episodeList.size()>i+2)
-        		{
-        			futureReleaseDate=episodeList.get(i+2).getepisodeAirDate();
-        		}
         		System.out.println(latestEpisode.getepisodeAirDate());
         		currentEpisodeIndex=i;
         	}
         }
         UserSeriesList newUserShow=new UserSeriesList(selectedSeries,latestEpisode,nextReleaseDate);
         userRep.saveSeries(newUserShow);
+        showUserShows();
         JOptionPane.showMessageDialog(parent,"Show added to MyShows: "+selectedSeries.getSeriesName());
         System.out.println(latestEpisode.getepisodeAirDate()+" "+selectedSeries.getSeriesName());
         
@@ -241,34 +259,35 @@ public class GUI extends javax.swing.JFrame {
 		Date currentDate=new Date(currentDateInMillis);
 		if(currentDate.after(latestEpisode.getepisodeAirDate()))
 		{
-			downloadLatestAndUpdateRepository(newUserShow);
+			downloadLatestEpisode(newUserShow);
 		}
-        userRep.findAllLatestEpisodes();
+        //userRep.findAllLatestEpisodes();
+		userRep.deleteSeries(selectedSeries);
+		userRep.saveSeries(newUserShow);
 
         while(currentDate.after(nextReleaseDate))
 		{
 
-        	latestEpisode=episodeList.get(currentEpisodeIndex+1);
 			if(episodeList.size()>currentEpisodeIndex+2)
     		{
-				nextEpisode=episodeList.get(currentEpisodeIndex);
+				nextEpisode=episodeList.get(currentEpisodeIndex+1);
     			nextReleaseDate=episodeList.get(currentEpisodeIndex+2).getepisodeAirDate();
     		}
 			else 
+			{
+				System.out.println("Next episode air date unavailable");
+				//LOGGING
 				break;
+			}
 			newUserShow.setLastEpisodeDownloaded(nextEpisode);
 	        newUserShow.setNextEpisodeRelease(nextReleaseDate);
-			downloadLatestAndUpdateRepository(newUserShow);
+			downloadLatestEpisode(newUserShow);
 			currentEpisodeIndex++;	
 			userRep.deleteSeries(selectedSeries);
 			userRep.saveSeries(newUserShow);
-
-			
 		}
         System.out.println("CurrentEpisodeinRep"+nextEpisode.episodeNumber);
-        //userRep.updateSeries(newUserShow);
-        //check if air date passed - call torrent
-        //and update air date in repository
+
     }                                        
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {                                         
@@ -322,21 +341,26 @@ public class GUI extends javax.swing.JFrame {
     
     private TorrentClient torrentClient = new TorrentClient();
     
-    private Spider getMagnetLink = new Spider();
+    private Spider spider = new Spider();
 
     public void setAsBackground(String seriesName, int season, int episode){
-        
-        String magnetLink = getMagnetLink.search(seriesName, season, episode);
-        System.out.println("Link :"+ magnetLink);
-        torrentClient.startDownloadSilent(magnetLink);
+        Status linkStatus = spider.search(seriesName, season, episode);
+    	if (linkStatus == Status.LINK_FOUND){
+	        String magnetLink = spider.getMagnetLink();
+	        System.out.println("Link :"+ magnetLink);
+	        torrentClient.startDownloadSilent(magnetLink);
+    	}
     }
 
 
     public void setAsForeground(String seriesName, int season, int episode){
 
-        String magnetLink = getMagnetLink.search(seriesName, season, episode);
-        System.out.println("Link :"+ magnetLink);
-        torrentClient.startDownload(magnetLink);
+    	Status linkStatus = spider.search(seriesName, season, episode);
+    	if (linkStatus == Status.LINK_FOUND){
+	        String magnetLink = spider.getMagnetLink();
+	        System.out.println("Link :"+ magnetLink);
+	        torrentClient.startDownload(magnetLink);
+    	}
     }
     
     

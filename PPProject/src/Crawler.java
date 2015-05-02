@@ -17,6 +17,7 @@ public class Crawler
     private List<String> links = new LinkedList<String>();
     private String foundURL = null;
     private String magnetLink = null;
+    private Status linkFound = Status.LINK_NOT_FOUND;
     /**
      * This performs all the work. It makes an HTTP request, checks the response, and then gathers
      * up all the links on the page. Perform a searchForWord after the successful crawl
@@ -25,11 +26,12 @@ public class Crawler
      *            - The URL to visit
      * @return whether or not the crawl was successful
      */
-    public boolean crawl(String url, String searchWord)
+    public Status crawl(String url, String searchWord)
     {
- 
+    	
         try
         {
+        	linkFound = Status.LINK_NOT_FOUND;
             Connection connection = Jsoup.connect(url).userAgent(USER_AGENT);
             Document htmlDocument = connection.get();
             
@@ -41,7 +43,8 @@ public class Crawler
             if(!connection.response().contentType().contains("text/html"))
             {
                 System.out.println("**Failure** Retrieved something other than HTML");
-                return false;
+                
+                return linkFound;
             }
             Elements linksOnPage = htmlDocument.select("a[href]");
             for(Element link : linksOnPage)
@@ -56,7 +59,8 @@ public class Crawler
                         Document foundURLhtmlDoc = foundURL.get();
                         this.fetchMagnetLink(link.absUrl("href"), foundURLhtmlDoc);
                         this.foundURL = (link.absUrl("href"));
-                        return true;
+                        linkFound = Status.LINK_FOUND;
+                        return linkFound;
                     }
                 	catch (IllegalArgumentException illegalURL){
                     	System.out.println("Found URL is invalid or site may be unavailable");
@@ -64,23 +68,27 @@ public class Crawler
                     }
                 	catch(IOException ioe)
                     {
-                        return false;
+                		
+                        return linkFound;
                     }
             	}
             	this.links.add(link.absUrl("href"));
             }
-            return false;
+            return linkFound;
         }
         catch (IllegalArgumentException illegalURL){
         	System.out.println("Url is invalid or site may be unavailable");
-        	return false;
+        	return linkFound;
         }
         catch(IOException ioe)
         {
-            return false;
+            return linkFound;
         }
     }
 
+    public Status magnetLinkFound(){
+    	return linkFound;
+    }
 	public String fetchMagnetLink(String url, Document foundURLhtmlDoc){
 		
 		System.out.println("something ------"+foundURLhtmlDoc.select("a[class*=magnetlinkButton]").attr("href"));

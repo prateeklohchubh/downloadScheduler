@@ -8,7 +8,7 @@ public class Spider
   private static final int MAX_PAGES_TO_SEARCH = 100;
   private Set<String> pagesVisited = new HashSet<String>();
   String seriesURL = "https://kickass.to/usearch/";
-
+  String magnetLink = null;
   /**
    * Our main launching point for the Spider's functionality. Internally it creates spider legs
    * that make an HTTP request and parse the response (the web page).
@@ -18,7 +18,7 @@ public class Spider
    * @param searchWord
    *            - The word or string that you are searching for
    */
-  public String search(String seriesName, int seriesSeason, int seriesEpisode)
+  public Status search(String seriesName, int seriesSeason, int seriesEpisode)
   {    
 
 	      StringBuffer searchURL = new StringBuffer();
@@ -58,22 +58,22 @@ public class Spider
         	  found.append(i);
         	  pagesVisited.add(found.toString());
         	  
-        	  if (searchForMagnet.crawl(found.toString(), searchWord) == true){
+        	  if (searchForMagnet.crawl(found.toString(), searchWord) == Status.LINK_FOUND){
         		  //System.out.println("going out");
-        		  break;
+        		  System.out.println("\n**Done** Visited " + this.pagesVisited.size() + " web page(s)");
+        		  this.magnetLink = searchForMagnet.getmagnetLink();
+        		  return Status.LINK_FOUND;
+        		  
         	  }
           }
-          if(i>MAX_PAGES_TO_SEARCH)
-          {
-        	  
-          }
-          
-          //System.out.println("Found link" + try1.getfoundURL());
-          System.out.println("\n**Done** Visited " + this.pagesVisited.size() + " web page(s)");
-          return searchForMagnet.getmagnetLink();
+		return Status.LINK_NOT_FOUND;
+                
           
   }
 
+  public String getMagnetLink(){
+	  return this.magnetLink;
+  }
 
 
 }
