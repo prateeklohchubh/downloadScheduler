@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UserPreferences {
-	
+	private static final Logger logging = Logger.getGlobal();
 	File userPreference;
 	String downloadLocation;
 	String torrentCommunity;
@@ -29,6 +31,7 @@ public class UserPreferences {
 			}
  
 		} catch (IOException e) {
+			logging.log(Level.SEVERE, "getDownloadLocation", e);
 			e.printStackTrace();
 		} 
 		return userPreferences[0];
@@ -49,6 +52,7 @@ public class UserPreferences {
 			}
  
 		} catch (IOException e) {
+			logging.log(Level.SEVERE, "getTorrentCommunity", e);
 			e.printStackTrace();
 		} 
 		return userPreferences[1];
@@ -69,6 +73,7 @@ public class UserPreferences {
 			}
  
 		} catch (IOException e) {
+			logging.log(Level.SEVERE, "getNotificationTime", e);
 			e.printStackTrace();
 		} 
 		return userPreferences[2];
@@ -89,6 +94,7 @@ public class UserPreferences {
 			}
  
 		} catch (IOException e) {
+			logging.log(Level.SEVERE, "getUpdateInterval", e);
 			e.printStackTrace();
 		} 
 		return userPreferences[3];
@@ -109,6 +115,7 @@ public class UserPreferences {
 			bw.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				logging.log(Level.SEVERE, "setuserPreference", e);
 				e.printStackTrace();
 			}
 		}	
@@ -132,6 +139,7 @@ public class UserPreferences {
 				}
 	 
 			} catch (IOException e) {
+				logging.log(Level.SEVERE, "setDownloadLocation", e);
 				e.printStackTrace();
 			} 
 			userPreferences[0]=downloadLocation;
@@ -145,6 +153,7 @@ public class UserPreferences {
 			System.out.println("Updated reference.");
  
 		} catch (IOException e) {
+			logging.log(Level.SEVERE, "setDownloadLocation", e);
 			e.printStackTrace();
 		}
 	}
@@ -166,6 +175,7 @@ public class UserPreferences {
 				}
 	 
 			} catch (IOException e) {
+				logging.log(Level.SEVERE, "setTorrentCommunity", e);
 				e.printStackTrace();
 			} 
 			userPreferences[1]=torrentCommunity;
@@ -179,6 +189,7 @@ public class UserPreferences {
 			System.out.println("Updated preference.");
  
 		} catch (IOException e) {
+			logging.log(Level.SEVERE, "setTorrentCommunity", e);
 			e.printStackTrace();
 		}
 	}
@@ -200,6 +211,7 @@ public class UserPreferences {
 				}
 	 
 			} catch (IOException e) {
+				logging.log(Level.SEVERE, "setNotificationTime", e);
 				e.printStackTrace();
 			} 
 			userPreferences[2]=notificationTime;
@@ -213,6 +225,7 @@ public class UserPreferences {
 			System.out.println("Updated preference.");
  
 		} catch (IOException e) {
+			logging.log(Level.SEVERE, "setNotificationTime", e);
 			e.printStackTrace();
 		}
 	}
@@ -234,6 +247,7 @@ public class UserPreferences {
 				}
 	 
 			} catch (IOException e) {
+				logging.log(Level.SEVERE, "setUpdateInterval", e);
 				e.printStackTrace();
 			} 
 			userPreferences[3]=Long.toString(updateInterval);
@@ -247,6 +261,7 @@ public class UserPreferences {
 			System.out.println("Updated reference.");
  
 		} catch (IOException e) {
+			logging.log(Level.SEVERE, "setUpdateInterval", e);
 			e.printStackTrace();
 		}
 	}

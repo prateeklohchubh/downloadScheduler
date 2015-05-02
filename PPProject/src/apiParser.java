@@ -1,18 +1,20 @@
 import javax.xml.parsers.*;
 
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.xml.sax.helpers.*;
 import org.xml.sax.*;
 public class apiParser {
-
+	private static final Logger logging = Logger.getGlobal();
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 		try
 		{
 			
 			File xmlfile = new File("C:\\B.Tech\\6th Semester\\PP\\Project\\apiresult.xml");
+			logging.log(Level.INFO, "API result.xml opened");
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			SAXParser sparser = factory.newSAXParser();
 			
@@ -79,9 +81,8 @@ public class apiParser {
 			
 		} catch(Exception e)
 		{
+			logging.throwing(apiParser.class.getName(),"main method of apiParser" , e);
 			e.printStackTrace();
 		}
-
 	}
-
 }

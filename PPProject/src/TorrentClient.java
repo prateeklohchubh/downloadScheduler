@@ -1,6 +1,9 @@
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TorrentClient {
+	private static final Logger logging = Logger.getGlobal();
 	//private String saveDirectoryPath;
 	public TorrentClient(){}
 	public void startDownload(String magnetLink){
@@ -9,6 +12,7 @@ public class TorrentClient {
 			Process p = Runtime.getRuntime().exec("deluge "+magnetLink);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			logging.log(Level.SEVERE, "Torrent client startDownload()", e);
 			e.printStackTrace();
 		}
 	}
@@ -44,6 +48,7 @@ public class TorrentClient {
 	        }
 	        catch (IOException e) {
 	            System.out.println("exception happened - here's what I know: ");
+	            logging.log(Level.SEVERE, "Torrent client startDownloadSilent()", e);
 	            e.printStackTrace();
 	            System.exit(-1);
 	        }
@@ -51,6 +56,7 @@ public class TorrentClient {
         public static void main(String args[]){
                 TorrentClient t = new TorrentClient();
                 t.startDownloadSilent("magnet:?xt=urn:btih:B72BDD7769107B14BCD9AC1FA0CF618BA625D63F&dn=fast+and+furious+7+2015+hdcam+readnfo+x264+cpg&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce");
+                
         }
 	
 }

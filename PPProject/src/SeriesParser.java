@@ -2,6 +2,8 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -13,7 +15,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 
 public class SeriesParser implements ParseType{
-	
+	private final static Logger logging = Logger.getGlobal();
 	ParserType parser;
 	ArrayList<Object> series = new ArrayList<>();
 	Series seriesElement; 
@@ -89,6 +91,7 @@ public class SeriesParser implements ParseType{
 		} 
 		catch (ParserConfigurationException | SAXException | IOException e) {
 			// TODO Auto-generated catch block
+			logging.log(Level.SEVERE, "series parser", e);
 			e.printStackTrace();
 		}
 		return series;
